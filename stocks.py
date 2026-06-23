@@ -9,7 +9,7 @@ from datetime import date
 import re
 import sqlalchemy as sq
 import pyodbc as py
-from DB import DB
+#from DB import DB
 
 
 class Stocks:
@@ -106,7 +106,7 @@ class Stocks:
         df['Dt'] = pd.to_datetime(df['Dt'], format='%d/%m/%Y').dt.date
         #create datekey for date dimension...turn pandas date int yyyymmdd e.g. (20260210)
         df['datekey'] = pd.to_datetime(df['Dt'], format='%Y%m%d').dt.strftime('%Y%m%d').astype(int)
-        df.to_sql(name='Commodity', schema='dbo'
+        df.to_sql(name='Commodity_DAG', schema='dbo'
             , con=cnx, if_exists='replace', index=False,index_label=False)
         #close connection DB:Close()
         print(sq.inspect(cnx).has_table('Commodity_Test'))
@@ -130,15 +130,15 @@ class Stocks:
          #                  'GC=F_Close': 'GC_Close', 'GC=F_Volume':'GC_Vol', 'Date_': 'Dt'}, inplace=True)
         df.rename(columns={'Date_': 'Dt'}, inplace=True)
         df['Dt'] = pd.to_datetime(df['Dt'], format='%d/%m/%Y')
-        df.to_sql(name='Commodity', schema='dbo'
+        df.to_sql(name='Commodity_DAG', schema='dbo'
             , con=cnx, if_exists='replace', index=False,index_label=False)
         cnx.close()
         
         
-st = Stocks()
+###st = Stocks()
 #df = st.ticks_plt()
-df = st.ticks_sql()
+###df = st.ticks_sql()
 #st.plotting(df)
 #st.csv_x(df=df)
-st.sql_insert(df=df)
+##st.sql_insert(df=df)
 #st.insert_db(df=df)
